@@ -15,7 +15,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:background="@drawable/keyboard_background_holo"
+  android:background="@color/greyLighter"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
@@ -27,18 +27,18 @@
     android:orientation="horizontal">
 
     <ImageButton
-      android:background="@null"
-      android:layout_width="0dip"
+        android:layout_width="0dip"
       android:layout_height="match_parent"
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_0_recents"
-      android:src="@drawable/ic_emoji_recent_light" />
+      android:src="@drawable/ic_access_time_black_24dp"
+        android:background="@null" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -47,12 +47,12 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_1_people"
-      android:src="@drawable/ic_emoji_people_light" />
+      android:src="@drawable/ic_mood_black_24dp" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -61,12 +61,12 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_2_nature"
-      android:src="@drawable/ic_emoji_nature_light" />
+      android:src="@drawable/ic_filter_vintage_black_24dp" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -75,12 +75,12 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_3_objects"
-      android:src="@drawable/ic_emoji_objects_light" />
+      android:src="@drawable/ic_toys_black_24dp" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -89,12 +89,12 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_4_cars"
-      android:src="@drawable/ic_emoji_places_light" />
+      android:src="@drawable/ic_directions_car_black_24dp" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -103,12 +103,12 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_5_punctuation"
-      android:src="@drawable/ic_emoji_symbols_light" />
+      android:src="@drawable/ic_change_history_black_24dp" />
 
     <View
       android:layout_width="1px"
       android:layout_height="match_parent"
-      android:background="@color/horizontal_vertical" />
+      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -116,7 +116,7 @@
       android:layout_height="match_parent"
       android:layout_weight="1"
       android:id="@+id/emojis_backspace"
-      android:src="@drawable/sym_keyboard_delete_holo_dark" />
+      android:src="@drawable/ic_backspace_black_24dp" />
   </LinearLayout>
 
   <android.support.v4.view.ViewPager
@@ -130,5 +130,5 @@
     android:layout_width="match_parent"
     android:layout_height="1px"
     android:layout_below="@id/emojis_tab"
-    android:background="@color/horizontal_divider" />
+    android:background="@color/greyLight" />
 </RelativeLayout>
