@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package com.rockerhieu.emojicon;
+package com.rockerhieu.emojicon.viewElements;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.style.DynamicDrawableSpan;
 import android.util.AttributeSet;
 import android.widget.EditText;
+
+import com.rockerhieu.emojicon.EmojiconHandler;
+import com.rockerhieu.emojicon.R;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com).

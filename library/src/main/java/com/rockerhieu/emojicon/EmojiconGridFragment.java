@@ -18,6 +18,7 @@ package com.rockerhieu.emojicon;
 
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.People;
+import com.rockerhieu.emojicon.recents.EmojiconRecents;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.widget.GridView;
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */
 public class EmojiconGridFragment extends Fragment implements AdapterView.OnItemClickListener {
+
     private OnEmojiconClickedListener mOnEmojiconClickedListener;
     private EmojiconRecents mRecents;
     private Emojicon[] mData;

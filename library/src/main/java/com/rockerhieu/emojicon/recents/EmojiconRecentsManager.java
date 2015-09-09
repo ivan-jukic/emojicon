@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.rockerhieu.emojicon;
+package com.rockerhieu.emojicon.recents;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

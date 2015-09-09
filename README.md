@@ -15,14 +15,14 @@ Fore more information please see [the website](http://rockerhieu.github.io/emoji
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.rockerhieu.emojicon.EmojiconTextView
+    <com.rockerhieu.emojicon.viewElements.EmojiconTextView
             android:id="@+id/txtEmojicon"
             android:text="I \ue32d emojicon"
             emojicon:emojiconAlignment="baseline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <com.rockerhieu.emojicon.EmojiconEditText
+    <com.rockerhieu.emojicon.viewElements.EmojiconEditText
             android:id="@+id/editEmojicon"
             android:text="I \ue32d emojicon"
             emojicon:emojiconSize="28sp"

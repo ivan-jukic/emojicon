@@ -15,30 +15,27 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:background="@color/greyLighter"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
-  <LinearLayout
-    android:id="@+id/emojis_tab"
+    android:background="@color/greyLighter"
     android:layout_width="match_parent"
-    android:layout_height="50dip"
-    android:layout_alignParentTop="true"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
-    <ImageButton
+    <RelativeLayout
+        android:id="@+id/emojis_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <!--<ImageButton
         android:layout_width="0dip"
       android:layout_height="match_parent"
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_0_recents"
-      android:src="@drawable/ic_access_time_black_24dp"
+      android:src="@drawable/ic_access_time_black_18dp"
         android:background="@null" />
-
-    <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
 
     <ImageButton
       android:background="@null"
@@ -47,12 +44,7 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_1_people"
-      android:src="@drawable/ic_mood_black_24dp" />
-
-    <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
+      android:src="@drawable/ic_mood_black_18dp" />
 
     <ImageButton
       android:background="@null"
@@ -61,12 +53,7 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_2_nature"
-      android:src="@drawable/ic_filter_vintage_black_24dp" />
-
-    <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
+      android:src="@drawable/ic_filter_vintage_black_18dp" />
 
     <ImageButton
       android:background="@null"
@@ -75,12 +62,7 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_3_objects"
-      android:src="@drawable/ic_toys_black_24dp" />
-
-    <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
+      android:src="@drawable/ic_toys_black_18dp" />
 
     <ImageButton
       android:background="@null"
@@ -89,12 +71,7 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_4_cars"
-      android:src="@drawable/ic_directions_car_black_24dp" />
-
-    <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
+      android:src="@drawable/ic_directions_car_black_18dp" />
 
     <ImageButton
       android:background="@null"
@@ -103,32 +80,51 @@
       android:layout_weight="1"
       android:scaleType="center"
       android:id="@+id/emojis_tab_5_punctuation"
-      android:src="@drawable/ic_change_history_black_24dp" />
+      android:src="@drawable/ic_change_history_black_18dp" />-->
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/emojis"
+            android:layout_toLeftOf="@+id/emojis_backspace"
+            android:layout_toStartOf="@+id/emojis_backspace">
+
+            <view
+                class="com.rockerhieu.emojicon.slidingTab.SlidingTabLayout"
+                android:id="@+id/emojis_tab_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff" />
+        </LinearLayout>
+
+        <ImageButton
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/emojis_backspace"
+            android:src="@drawable/ic_backspace_black_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+    </RelativeLayout>
+
+    <view
+        class="android.support.v4.view.ViewPager"
+        android:layout_below="@id/emojis_wrapper"
+        android:id="@+id/emojis_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
     <View
-      android:layout_width="1px"
-      android:layout_height="match_parent"
-      android:background="@color/greyLight" />
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/emojis_wrapper"
+        android:background="@color/greyLight"
+        android:id="@+id/tabs_divider" />
 
-    <ImageButton
-      android:background="@null"
-      android:layout_width="0dip"
-      android:layout_height="match_parent"
-      android:layout_weight="1"
-      android:id="@+id/emojis_backspace"
-      android:src="@drawable/ic_backspace_black_24dp" />
-  </LinearLayout>
-
-  <android.support.v4.view.ViewPager
-    android:layout_below="@id/emojis_tab"
-    android:id="@+id/emojis_pager"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true" />
-
-  <View
-    android:layout_width="match_parent"
-    android:layout_height="1px"
-    android:layout_below="@id/emojis_tab"
-    android:background="@color/greyLight" />
 </RelativeLayout>

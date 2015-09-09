@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.rockerhieu.emojicon;
+package com.rockerhieu.emojicon.recents;
 
+import com.rockerhieu.emojicon.EmojiAdapter;
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.R;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 
 import android.content.Context;
@@ -36,7 +39,7 @@ public class EmojiconRecentsGridFragment extends EmojiconGridFragment implements
         return newInstance(false);
     }
 
-    protected static EmojiconRecentsGridFragment newInstance(boolean useSystemDefault) {
+    public static EmojiconRecentsGridFragment newInstance(boolean useSystemDefault) {
         EmojiconRecentsGridFragment fragment = new EmojiconRecentsGridFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean(USE_SYSTEM_DEFAULT_KEY, useSystemDefault);

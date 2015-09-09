@@ -22,9 +22,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.rockerhieu.emojicon.EmojiconEditText;
+import com.rockerhieu.emojicon.viewElements.EmojiconEditText;
 import com.rockerhieu.emojicon.EmojiconGridFragment;
-import com.rockerhieu.emojicon.EmojiconTextView;
+import com.rockerhieu.emojicon.viewElements.EmojiconTextView;
 import com.rockerhieu.emojicon.EmojiconsFragment;
 import com.rockerhieu.emojicon.emoji.Emojicon;
 
