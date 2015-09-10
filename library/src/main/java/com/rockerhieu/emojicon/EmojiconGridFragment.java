@@ -18,6 +18,7 @@ package com.rockerhieu.emojicon;
 
 import com.rockerhieu.emojicon.emoji.Emojicon;
 import com.rockerhieu.emojicon.emoji.People;
+import com.rockerhieu.emojicon.recent.EmojiconRecent;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,19 +33,20 @@ import android.widget.GridView;
  * @author Hieu Rocker (rockerhieu@gmail.com)
  */
 public class EmojiconGridFragment extends Fragment implements AdapterView.OnItemClickListener {
+
     private OnEmojiconClickedListener mOnEmojiconClickedListener;
-    private EmojiconRecents mRecents;
+    private EmojiconRecent mRecents;
     private Emojicon[] mData;
     private boolean mUseSystemDefault = false;
 
     private static final String USE_SYSTEM_DEFAULT_KEY = "useSystemDefaults";
     private static final String EMOJICONS_KEY = "emojicons";
 
-    protected static EmojiconGridFragment newInstance(Emojicon[] emojicons, EmojiconRecents recents) {
+    protected static EmojiconGridFragment newInstance(Emojicon[] emojicons, EmojiconRecent recents) {
         return newInstance(emojicons, recents, false);
     }
 
-    protected static EmojiconGridFragment newInstance(Emojicon[] emojicons, EmojiconRecents recents, boolean useSystemDefault) {
+    protected static EmojiconGridFragment newInstance(Emojicon[] emojicons, EmojiconRecent recents, boolean useSystemDefault) {
         EmojiconGridFragment emojiGridFragment = new EmojiconGridFragment();
         Bundle args = new Bundle();
         args.putParcelableArray(EMOJICONS_KEY, emojicons);
@@ -109,7 +111,7 @@ public class EmojiconGridFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private void setRecents(EmojiconRecents recents) {
+    private void setRecents(EmojiconRecent recents) {
         mRecents = recents;
     }
 

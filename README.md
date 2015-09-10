@@ -1,6 +1,6 @@
-![master on Travis CI](https://travis-ci.org/rockerhieu/emojicon.png?branch=master) ![emojicon on Maven Central](https://maven-badges.herokuapp.com/maven-central/com.rockerhieu.emojicon/library/badge.svg)
-
 ## Emojicon
+
+#### Note: this is a fork of the original repository. Basic functionality has stayed the same, but it has been visualy updated, and code has been reorganized. Min SDK version is 14.
 
 Do you like emojis in Whatsapp, iMessage? [Emojicon](http://rockerhieu.github.io/emojicon/) is a library to implement such a thing for Android.
 
@@ -15,14 +15,14 @@ Fore more information please see [the website](http://rockerhieu.github.io/emoji
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.rockerhieu.emojicon.EmojiconTextView
+    <com.rockerhieu.emojicon.viewElements.EmojiconTextView
             android:id="@+id/txtEmojicon"
             android:text="I \ue32d emojicon"
             emojicon:emojiconAlignment="baseline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <com.rockerhieu.emojicon.EmojiconEditText
+    <com.rockerhieu.emojicon.viewElements.EmojiconEditText
             android:id="@+id/editEmojicon"
             android:text="I \ue32d emojicon"
             emojicon:emojiconSize="28sp"
@@ -47,7 +47,7 @@ _Note: You can change the size and alignment of emojis in XML layout through att
 * `EmojiconGridFragment`: a fragment contains emojis in a `GridView` for the user to choose.
 * `EmojiconsFragment`: a fragment contains many set of emojis for the user to choose.
 
-## Building in IntelliJ
+## Building in IntelliJ (the original repository)
 
 Via Gradle:
 
