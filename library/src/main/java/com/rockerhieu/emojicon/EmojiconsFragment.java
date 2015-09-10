@@ -18,35 +18,38 @@ package com.rockerhieu.emojicon;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.*;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 
 import com.rockerhieu.emojicon.emoji.*;
-import com.rockerhieu.emojicon.recents.EmojiconRecents;
-import com.rockerhieu.emojicon.recents.EmojiconRecentsGridFragment;
-import com.rockerhieu.emojicon.recents.EmojiconRecentsManager;
+import com.rockerhieu.emojicon.recent.EmojiconRecent;
+import com.rockerhieu.emojicon.recent.EmojiconRecentGridFragment;
+import com.rockerhieu.emojicon.recent.EmojiconRecentManager;
 import com.rockerhieu.emojicon.slidingTab.SlidingTabLayout;
+import com.rockerhieu.emojicon.utils.EmojiconUtil;
 
 import java.util.Arrays;
 
 /**
  * @author Hieu Rocker (rockerhieu@gmail.com).
  */
-public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChangeListener, EmojiconRecents {
-    private static final String USE_SYSTEM_DEFAULT_KEY = "useSystemDefaults";
+public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChangeListener, EmojiconRecent {
+    protected static final String USE_SYSTEM_DEFAULT_KEY = "useSystemDefaults";
 
-    private int mEmojiTabLastSelectedIndex = -1;
-    private boolean mUseSystemDefault = false;
-
-    private OnEmojiconBackspaceClickedListener mOnEmojiconBackspaceClickedListener;
-    private View[] mEmojiTabs;
-    private PagerAdapter mEmojisAdapter;
-    private EmojiconRecentsManager mRecentsManager;
+    protected View mView;
+    protected ViewPager mEmojisPager;
+    protected OnEmojiconBackspaceClickedListener mOnEmojiconBackspaceClickedListener;
+    protected PagerAdapter mEmojisAdapter;
+    protected EmojiconRecentManager mRecentManager;
+    protected int mEmojiTabLastSelectedIndex = -1;
+    protected boolean mUseSystemDefault = false;
 
     /**
      * Static method to create a new Emojicons fragment.
@@ -63,49 +66,32 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
 
 
     /**
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * Method which inflates the layout for the fragment, initializes tabs and sliding tab
+     * layout / strip. It also attaches an event to the backspace functionality, and
+     * when called, checks which tab was last selected and selects it by default (first tab
+     * if none was selected before that).
+     * @param inflater - layout inflater service
+     * @param container - container for the layout
+     * @param savedInstanceState - previous state of the fragment
+     * @return - view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.emojicons, container, false);
+        /// Inflate the view for the fragment.
+        mView = inflater.inflate(R.layout.emojicons, container, false);
 
-        /// Get reference to the view pager.
-        final ViewPager emojisPager = (ViewPager) view.findViewById(R.id.emojis_pager);
+        /// Get reference to the view pager
+        mEmojisPager = (ViewPager) mView.findViewById(R.id.emojis_pager);
 
-        /// Previous value > emojisPager.setOnPageChangeListener(this); -> DEPRECATED
-        emojisPager.addOnPageChangeListener(this);
+        /// Previous value > mEmojisPager.setOnPageChangeListener(this); -> DEPRECATED
+        mEmojisPager.addOnPageChangeListener(this);
 
-        // we handle recents
-        EmojiconRecents recents = this;
-        mEmojisAdapter = new EmojisPagerAdapter(getFragmentManager(), Arrays.asList(
-                EmojiconRecentsGridFragment.newInstance(mUseSystemDefault),
-                EmojiconGridFragment.newInstance(People.DATA, recents, mUseSystemDefault),
-                EmojiconGridFragment.newInstance(Nature.DATA, recents, mUseSystemDefault),
-                EmojiconGridFragment.newInstance(Objects.DATA, recents, mUseSystemDefault),
-                EmojiconGridFragment.newInstance(Places.DATA, recents, mUseSystemDefault),
-                EmojiconGridFragment.newInstance(Symbols.DATA, recents, mUseSystemDefault)
-        ));
+        /// Setup icons tabs
+        setupTabs();
 
-        /// Set pager adapter...
-        emojisPager.setAdapter(mEmojisAdapter);
-
-        SlidingTabLayout tabs = (SlidingTabLayout)view.findViewById(R.id.emojis_tab_view);
-        tabs.setCustomTabView(R.layout.emojicons_tab, R.id.tab_text_content);
-        tabs.setUseIconsInTabs(true);
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-        tabs.setViewPager(emojisPager);
-
-        /// Set backspace functionality for the emoji's...
-        view.findViewById(R.id.emojis_backspace).setOnTouchListener(new RepeatListener(1000, 50, new View.OnClickListener() {
+        /// Set backspace functionality for the emojis...
+        final ImageButton backspace = (ImageButton)mView.findViewById(R.id.emojis_backspace);
+        backspace.setOnTouchListener(new RepeatListener(1000, 50, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnEmojiconBackspaceClickedListener != null) {
@@ -114,22 +100,98 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
             }
         }));
 
-        // get last selected page
-        mRecentsManager = EmojiconRecentsManager.getInstance(view.getContext());
-        int page = mRecentsManager.getRecentPage();
+        /// Change icon on backspace press...
+        /*backspace.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (mOnEmojiconBackspaceClickedListener != null) {
+                        mOnEmojiconBackspaceClickedListener.onEmojiconBackspaceClicked(v);
+                    }
+                    backspace.setImageResource(R.drawable.ic_backspace_darkgrey_24dp);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    backspace.setImageResource(R.drawable.ic_backspace_grey_24dp);
+                }
+                return true;
+            }
+        });*/
+
+        return mView;
+    }
+
+
+    /**
+     * ...
+     */
+    private void setupTabs() {
+        // Handle recent...
+        EmojiconRecent recent = this;
+        mEmojisAdapter = new EmojisPagerAdapter(getFragmentManager(), Arrays.asList(
+                EmojiconRecentGridFragment.newInstance(mUseSystemDefault),
+                EmojiconGridFragment.newInstance(People.DATA, recent, mUseSystemDefault),
+                EmojiconGridFragment.newInstance(Nature.DATA, recent, mUseSystemDefault),
+                EmojiconGridFragment.newInstance(Objects.DATA, recent, mUseSystemDefault),
+                EmojiconGridFragment.newInstance(Places.DATA, recent, mUseSystemDefault),
+                EmojiconGridFragment.newInstance(Symbols.DATA, recent, mUseSystemDefault)
+        ));
+
+        /// Set pager adapter.
+        mEmojisPager.setAdapter(mEmojisAdapter);
+
+        /// Initialize tab layout...
+        final SlidingTabLayout tabs = (SlidingTabLayout)mView.findViewById(R.id.emojis_tab_view);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+
+        /// Detect when the view is ready and calculate single tab width!
+        ViewTreeObserver vto = mView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    mView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    mView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+
+                /// Get display metrics.
+                Point display = EmojiconUtil.getDisplaySize(getActivity());
+
+                /// We need display metrics to calculate the available width for our tab elements...
+                /// To successfully calculate this, we also need the width of the backspace button.
+                ImageButton backspace = (ImageButton) mView.findViewById(R.id.emojis_backspace);
+                int tabWidth = (int) Math.floor(
+                        (display.x - backspace.getMeasuredWidth()) / mEmojisAdapter.getCount()
+                );
+                tabs.setTabWidth(tabWidth);
+                tabs.setViewPager(mEmojisPager);
+                setLastSelectedPage();
+            }
+        });
+    }
+
+
+    /**
+     * Read from the recent manager, which page was the last one selected.
+     */
+    protected void setLastSelectedPage() {
+        /// Get last selected page
+        mRecentManager = EmojiconRecentManager.getInstance(mView.getContext());
+        int page = mRecentManager.getRecentPage();
 
         // last page was recents, check if there are recents to use, if none was found, go to page 1
-        if (page == 0 && mRecentsManager.size() == 0) {
+        if (page == 0 && mRecentManager.size() == 0) {
             page = 1;
         }
-
         if (page == 0) {
             onPageSelected(page);
         } else {
-            emojisPager.setCurrentItem(page, false);
+            mEmojisPager.setCurrentItem(page, false);
         }
-
-        return view;
     }
 
 
@@ -169,7 +231,6 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
         if (editText == null || emojicon == null) {
             return;
         }
-
         int start = editText.getSelectionStart();
         int end = editText.getSelectionEnd();
         if (start < 0) {
@@ -187,9 +248,10 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
      */
     @Override
     public void addRecentEmoji(Context context, Emojicon emojicon) {
-        final ViewPager emojisPager = (ViewPager) getView().findViewById(R.id.emojis_pager);
-        EmojiconRecentsGridFragment fragment = (EmojiconRecentsGridFragment) mEmojisAdapter.instantiateItem(emojisPager, 0);
-        fragment.addRecentEmoji(context, emojicon);
+        if (null != mEmojisPager) {
+            EmojiconRecentGridFragment fragment = (EmojiconRecentGridFragment) mEmojisAdapter.instantiateItem(mEmojisPager, 0);
+            fragment.addRecentEmoji(context, emojicon);
+        }
     }
 
 
@@ -223,20 +285,14 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
         if (mEmojiTabLastSelectedIndex == i) {
             return;
         }
-        switch (i) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                /*if (mEmojiTabLastSelectedIndex >= 0 && mEmojiTabLastSelectedIndex < mEmojiTabs.length) {
-                    mEmojiTabs[mEmojiTabLastSelectedIndex].setSelected(false);
-                }
-                mEmojiTabs[i].setSelected(true);*/
-                mEmojiTabLastSelectedIndex = i;
-                mRecentsManager.setRecentPage(i);
-                break;
+        if (0 <= i &&  5 >= i) {
+            /// TODO: check if this commented code is necessary
+           /* if (mEmojiTabLastSelectedIndex >= 0 && mEmojiTabLastSelectedIndex < mEmojiTabs.length) {
+                mEmojiTabs[mEmojiTabLastSelectedIndex].setSelected(false);
+            }
+            mEmojiTabs[i].setSelected(true);*/
+            mEmojiTabLastSelectedIndex = i;
+            mRecentManager.setRecentPage(i);
         }
     }
 

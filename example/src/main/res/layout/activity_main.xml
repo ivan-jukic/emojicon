@@ -23,12 +23,12 @@
               tools:context="com.rockerhieu.emojicon.example.MainActivity$PlaceholderFragment">
 
 
-    <CheckBox
+    <!--<CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/use_system_default"
         android:id="@+id/use_system_default"
-        android:checked="false"/>
+        android:checked="false"/>-->
 
     <com.rockerhieu.emojicon.viewElements.EmojiconTextView
             android:id="@+id/txtEmojicon"

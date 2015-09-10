@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements EmojiconGridFragme
                 mTxtEmojicon.setText(s);
             }
         });
-        mCheckBox = (CheckBox) findViewById(R.id.use_system_default);
+        /*mCheckBox = (CheckBox) findViewById(R.id.use_system_default);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements EmojiconGridFragme
                 mTxtEmojicon.setUseSystemDefault(b);
                 setEmojiconFragment(b);
             }
-        });
+        });*/
 
         setEmojiconFragment(false);
     }

@@ -10,12 +10,12 @@ public class EmojisPagerAdapter extends FragmentPagerAdapter {
 
     private List<EmojiconGridFragment> fragments;
     private int[] tabIconIds = {
-            R.drawable.ic_access_time_black_18dp,
-            R.drawable.ic_mood_black_18dp,
-            R.drawable.ic_filter_vintage_black_18dp,
-            R.drawable.ic_toys_black_18dp,
-            R.drawable.ic_directions_car_black_18dp,
-            R.drawable.ic_change_history_black_18dp,
+            R.drawable.ic_emoji_recent,
+            R.drawable.ic_emoji_people,
+            R.drawable.ic_emoji_nature,
+            R.drawable.ic_emoji_objects,
+            R.drawable.ic_emoji_places,
+            R.drawable.ic_emoji_symbols
     };
 
     public EmojisPagerAdapter(FragmentManager fm) {
