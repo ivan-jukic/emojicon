@@ -1,6 +1,6 @@
 ## Emojicon
 
-#### Note: this is a fork of the original repository. Basic functionality has stayed the same, but it has been visualy updated, and code has been reogranized. Min SDK version is 14.
+#### Note: this is a fork of the original repository. Basic functionality has stayed the same, but it has been visualy updated, and code has been reorganized. Min SDK version is 14.
 
 Do you like emojis in Whatsapp, iMessage? [Emojicon](http://rockerhieu.github.io/emojicon/) is a library to implement such a thing for Android.
 
