@@ -91,17 +91,7 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
 
         /// Set backspace functionality for the emojis...
         final ImageButton backspace = (ImageButton)mView.findViewById(R.id.emojis_backspace);
-        backspace.setOnTouchListener(new RepeatListener(1000, 50, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnEmojiconBackspaceClickedListener != null) {
-                    mOnEmojiconBackspaceClickedListener.onEmojiconBackspaceClicked(v);
-                }
-            }
-        }));
-
-        /// Change icon on backspace press...
-        /*backspace.setOnTouchListener(new View.OnTouchListener() {
+        backspace.setOnTouchListener(new RepeatListener(700, 50, new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -114,7 +104,7 @@ public class EmojiconsFragment extends Fragment implements ViewPager.OnPageChang
                 }
                 return true;
             }
-        });*/
+        }));
 
         return mView;
     }

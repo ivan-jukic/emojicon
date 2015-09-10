@@ -16,13 +16,16 @@ import android.view.View;
  */
 public class RepeatListener implements View.OnTouchListener {
 
-    private Handler handler = new Handler();
+    protected Handler handler = new Handler();
 
-    private int initialInterval;
-    private final int normalInterval;
-    private final View.OnClickListener clickListener;
+    protected View downView;
+    protected int initialInterval;
+    protected int normalInterval;
+    protected View.OnClickListener clickListener = null;
+    protected View.OnTouchListener touchListener = null;
+    protected MotionEvent mLastMotionEvent;
 
-    private Runnable handlerRunnable = new Runnable() {
+    protected Runnable handlerRunnable = new Runnable() {
         @Override
         public void run() {
             if (downView == null) {
@@ -30,11 +33,14 @@ public class RepeatListener implements View.OnTouchListener {
             }
             handler.removeCallbacksAndMessages(downView);
             handler.postAtTime(this, downView, SystemClock.uptimeMillis() + normalInterval);
-            clickListener.onClick(downView);
+            if (null != clickListener) {
+                clickListener.onClick(downView);
+            } else if (null != touchListener) {
+                touchListener.onTouch(downView, mLastMotionEvent);
+            }
         }
     };
 
-    private View downView;
 
     /**
      * @param initialInterval The interval before first click event
@@ -54,19 +60,41 @@ public class RepeatListener implements View.OnTouchListener {
         this.clickListener = clickListener;
     }
 
+
+    public RepeatListener(int initialInterval, int normalInterval, View.OnTouchListener touchListener) {
+        if (touchListener == null)
+            throw new IllegalArgumentException("null runnable");
+        if (initialInterval < 0 || normalInterval < 0)
+            throw new IllegalArgumentException("negative interval");
+
+        this.initialInterval = initialInterval;
+        this.normalInterval = normalInterval;
+        this.touchListener = touchListener;
+    }
+
+
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downView = view;
                 handler.removeCallbacks(handlerRunnable);
                 handler.postAtTime(handlerRunnable, downView, SystemClock.uptimeMillis() + initialInterval);
-                clickListener.onClick(view);
+                if (null != clickListener) {
+                    clickListener.onClick(view);
+                } else if (null != touchListener) {
+                    mLastMotionEvent = motionEvent;
+                    touchListener.onTouch(view, motionEvent);
+                }
                 return true;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
+                if (null != touchListener) {
+                    touchListener.onTouch(view, motionEvent);
+                }
                 handler.removeCallbacksAndMessages(downView);
                 downView = null;
+                mLastMotionEvent = null;
                 return true;
         }
         return false;
