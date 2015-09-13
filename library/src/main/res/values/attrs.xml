@@ -26,4 +26,6 @@
         <attr name="emojiconTextLength" format="integer"/>
         <attr name="emojiconUseSystemDefault" format="boolean"/>
     </declare-styleable>
+
+    <dimen name="keyboard_height">250dp</dimen>
 </resources>
